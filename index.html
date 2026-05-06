@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="FreeForm.io - Free Professional Invoice Generator. Create VAT invoices, credit notes, quotes & more.">
+    <title>FreeForm.io - Free Invoice Generator</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=Lato:wght@300;400;700;900&family=Raleway:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* =========== ALL CSS START =========== */
+        :root {
+            --bg-body:#f1f5f9;--bg-surface:#fff;--bg-muted:#e2e8f0;--bg-glass:rgba(255,255,255,0.72);
+            --text-primary:#0f172a;--text-secondary:#334155;--text-muted:#64748b;
+            --border:#cbd5e1;--border-light:#e2e8f0;
+            --accent:#1a3a5c;--accent-hover:#0f2a45;--accent-light:rgba(26,58,92,0.08);--accent-glow:rgba(26,58,92,0.3);
+            --inv-accent:#1a3a5c;--inv-font:'Lato','Inter',sans-serif;--inv-font-size:1;
+            --danger:#ef4444;--danger-hover:#dc2626;
+            --shadow-sm:0 1px 2px rgba(0,0,0,0.04);--shadow:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 6px rgba(0,0,0,0.06);--shadow-lg:0 10px 25px rgba(0,0,0,0.08);
+            --header-h:64px;--radius:8px;--radius-sm:6px;
+        }
+        [data-theme="dark"] {
+            --bg-body:#0f172a;--bg-surface:#1e293b;--bg-muted:#334155;--bg-glass:rgba(15,23,42,0.75);
+            --text-primary:#f1f5f9;--text-secondary:#cbd5e1;--text-muted:#94a3b8;
+            --border:#475569;--border-light:#334155;
+            --shadow-sm:0 1px 2px rgba(0,0,0,0.4);--shadow:0 1px 3px rgba(0,0,0,0.5);--shadow-md:0 4px 6px rgba(0,0,0,0.5);--shadow-lg:0 10px 25px rgba(0,0,0,0.7);
+            --accent-light:rgba(96,165,250,0.15);--accent-glow:rgba(96,165,250,0.3);
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-body);color:var(--text-primary);line-height:1.6;transition:background 0.2s,color 0.2s;overflow-x:hidden;min-height:100vh}
+        
+        .header{display:flex;align-items:center;justify-content:space-between;padding:0 1.8rem;height:var(--header-h);background:linear-gradient(135deg,#0b1622 0%,#152238 30%,#1a3050 60%,#0f1a2e 100%);background-size:300% 300%;animation:gradShift 10s ease infinite;position:sticky;top:0;z-index:1000;box-shadow:0 4px 25px rgba(0,0,0,0.35);overflow:hidden}
+        @keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        .header-shine{position:absolute;top:0;left:-100%;width:35%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);animation:hShine 7s ease-in-out infinite}
+        @keyframes hShine{0%{left:-100%}60%{left:200%}100%{left:200%}}
+        .header-left{display:flex;align-items:center;gap:10px;z-index:1}
+        .logo-box{width:38px;height:38px;background:rgba(255,255,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);animation:logoPulse 2.5s ease-in-out infinite}
+        @keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+        .brand-name{font-size:1.35rem;font-weight:800;color:#fff;font-family:'Poppins',sans-serif;letter-spacing:-0.5px}
+        .brand-dot{color:#60a5fa;animation:dotBlink 2s ease-in-out infinite}
+        @keyframes dotBlink{0%,100%{opacity:1}50%{opacity:0.25}}
+        .header-center{z-index:1}.tagline{color:rgba(255,255,255,0.72);font-size:0.83rem}
+        .header-right{display:flex;gap:5px;z-index:1}
+        .mobile-only{display:none!important}
+        .icon-btn{position:relative;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);color:#fff;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:all 0.18s}
+        .icon-btn:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.4)}
+        .btn-tip{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:0.62rem;padding:2px 7px;border-radius:3px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.15s}
+        .icon-btn:hover .btn-tip{opacity:1}
+        
+        .customize-panel{position:fixed;top:0;right:-370px;width:370px;height:100vh;max-width:100vw;background:var(--bg-surface);z-index:2000;box-shadow:-5px 0 30px rgba(0,0,0,0.2);transition:right 0.32s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;display:flex;flex-direction:column}
+        .customize-panel.open{right:0}
+        .customize-header{padding:1.3rem 1.4rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;background:var(--bg-surface);position:sticky;top:0;z-index:1}
+        .customize-header h3{font-size:1.1rem;display:flex;align-items:center;gap:7px;color:var(--text-primary)}
+        .customize-note{font-size:0.72rem;color:var(--text-muted);margin-top:3px}
+        .close-btn{background:none;border:none;font-size:1.5rem;color:var(--text-muted);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+        .close-btn:hover{background:var(--bg-muted);color:var(--text-primary)}
+        .customize-body{padding:1.3rem;display:flex;flex-direction:column;gap:1.4rem}
+        .custom-section{display:flex;flex-direction:column;gap:9px}
+        .custom-label{font-size:0.85rem;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+        .custom-label span{font-weight:400;font-size:0.7rem;color:var(--text-muted)}
+        .color-presets{display:flex;flex-wrap:wrap;gap:7px}
+        .color-dot{width:28px;height:28px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.15s}
+        .color-dot:hover{transform:scale(1.2);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+        .color-dot.active{border-color:var(--text-primary);box-shadow:0 0 0 3px var(--accent-light)}
+        .color-picker{width:100%;height:34px;border:2px solid var(--border);border-radius:6px;cursor:pointer;background:var(--bg-surface);padding:2px}
+        .custom-select{width:100%;padding:9px 11px;border:2px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-surface);color:var(--text-primary);font-size:0.85rem;cursor:pointer;font-family:inherit;transition:border-color 0.15s}
+        .custom-select:focus{border-color:var(--accent);outline:none}
+        .range-slider{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:var(--bg-muted);border-radius:10px;outline:none}
+        .range-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:19px;height:19px;background:var(--accent);border-radius:50%;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.2)}
+        .range-labels{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--text-muted)}
+        .toggle-switch{position:relative;display:inline-block;width:46px;height:24px}
+        .toggle-switch input{opacity:0;width:0;height:0}
+        .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--bg-muted);border-radius:24px;transition:0.25s}
+        .toggle-slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.25s}
+        .toggle-switch input:checked+.toggle-slider{background:var(--accent)}
+        .toggle-switch input:checked+.toggle-slider::before{transform:translateX(22px)}
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);z-index:1500;opacity:0;pointer-events:none;transition:opacity 0.3s}
+        .overlay.show{opacity:1;pointer-events:auto}
+        
+        .main-container{display:flex;height:calc(100vh - var(--header-h));overflow:hidden}
+        .form-panel{width:45%;min-width:380px;display:flex;flex-direction:column;background:var(--bg-body);border-right:1px solid var(--border-light);overflow:hidden}
+        .panel-top{padding:1.2rem 1.5rem 0.8rem;flex-shrink:0;border-bottom:1px solid var(--border-light)}
+        .panel-top h2{font-size:1.15rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:9px}
+        .panel-top p{font-size:0.76rem;color:var(--text-muted);margin-top:2px}
+        .form-scroll{flex:1;overflow-y:auto;padding:1rem 1.5rem 1.5rem}
+        .form-card{background:var(--bg-glass);backdrop-filter:blur(14px);border:1px solid var(--border-light);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1rem;box-shadow:var(--shadow-sm);transition:box-shadow 0.2s}
+        .form-card:hover{box-shadow:var(--shadow-md)}
+        .form-card legend{font-weight:700;padding:0 9px;color:var(--accent);font-size:0.88rem;display:flex;align-items:center;gap:7px}
+        
+        .floating-label{position:relative;margin-bottom:0.9rem}
+        .floating-label input,.floating-label textarea,.floating-label select{width:100%;padding:12px 12px 8px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:0.86rem;background:var(--bg-surface);color:var(--text-primary);font-family:inherit;transition:all 0.18s;outline:none}
+        .floating-label textarea{resize:vertical;min-height:48px}
+        .floating-label input:focus,.floating-label textarea:focus,.floating-label select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:var(--bg-surface)}
+        .floating-label label{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:0.83rem;color:var(--text-muted);pointer-events:none;transition:all 0.18s;background:transparent;padding:0 4px;border-radius:3px}
+        .floating-label textarea~label{top:16px}
+        .floating-label input:focus~label,.floating-label input:not(:placeholder-shown)~label,.floating-label textarea:focus~label,.floating-label textarea:not(:placeholder-shown)~label,.floating-label select:focus~label,.floating-label select:valid~label{top:-8px;font-size:0.7rem;color:var(--accent);font-weight:600;background:var(--bg-surface)}
+        .floating-label input::placeholder,.floating-label textarea::placeholder{color:var(--text-muted);opacity:0.5;font-size:0.82rem}
+        .floating-label input:focus::placeholder,.floating-label textarea:focus::placeholder{opacity:0.3}
+        
+        [data-theme="dark"] .form-panel{background:#0f172a}
+        [data-theme="dark"] .form-card{background:rgba(30,41,59,0.65);border-color:#334155}
+        [data-theme="dark"] .form-card legend{color:#60a5fa}
+        [data-theme="dark"] .panel-top h2{color:#f1f5f9}
+        [data-theme="dark"] .panel-top p{color:#94a3b8}
+        [data-theme="dark"] .floating-label input,[data-theme="dark"] .floating-label textarea,[data-theme="dark"] .floating-label select{background-color:#1e293b;color:#f1f5f9;border-color:#475569}
+        [data-theme="dark"] .floating-label input::placeholder,[data-theme="dark"] .floating-label textarea::placeholder{color:#94a3b8;opacity:0.6}
+        [data-theme="dark"] .floating-label label{color:#94a3b8;background:transparent}
+        [data-theme="dark"] .floating-label input:focus~label,[data-theme="dark"] .floating-label input:not(:placeholder-shown)~label,[data-theme="dark"] .floating-label textarea:focus~label,[data-theme="dark"] .floating-label textarea:not(:placeholder-shown)~label,[data-theme="dark"] .floating-label select:focus~label,[data-theme="dark"] .floating-label select:valid~label{color:#60a5fa;background:#1e293b}
+        [data-theme="dark"] .floating-label input:focus,[data-theme="dark"] .floating-label textarea:focus,[data-theme="dark"] .floating-label select:focus{border-color:#60a5fa;background-color:#0f172a;box-shadow:0 0 0 3px rgba(96,165,250,0.15)}
+        [data-theme="dark"] .customize-panel{background:#1e293b}
+        [data-theme="dark"] .customize-header{background:#1e293b;border-bottom-color:#334155}
+        [data-theme="dark"] .customize-header h3{color:#f1f5f9}
+        [data-theme="dark"] .custom-label{color:#cbd5e1}
+        [data-theme="dark"] .close-btn{color:#94a3b8}
+        [data-theme="dark"] .close-btn:hover{background:#334155;color:#f1f5f9}
+        [data-theme="dark"] .custom-select{background-color:#1e293b;color:#f1f5f9;border-color:#475569}
+        [data-theme="dark"] select option{background-color:#1e293b;color:#f1f5f9}
+        [data-theme="dark"] .custom-select option{background-color:#1e293b;color:#f1f5f9}
+        [data-theme="dark"] .line-item-row input,[data-theme="dark"] .line-item-row select{background-color:#1e293b;color:#f1f5f9;border-color:#475569}
+        [data-theme="dark"] .line-item-row input::placeholder{color:#94a3b8;opacity:0.5}
+        [data-theme="dark"] .line-item-row input:focus,[data-theme="dark"] .line-item-row select:focus{border-color:#60a5fa;background-color:#0f172a}
+        [data-theme="dark"] .btn-outline{color:#cbd5e1;border-color:#475569}
+        [data-theme="dark"] .btn-outline:hover{border-color:#60a5fa;color:#60a5fa}
+        [data-theme="dark"] .preview-top h2{color:#f1f5f9}
+        [data-theme="dark"] .preview-top p{color:#94a3b8}
+        [data-theme="dark"] .modal-box{background:#1e293b;border:1px solid #334155}
+        [data-theme="dark"] .modal-box h3{color:#f1f5f9}
+        
+        .form-row-2col{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+        .line-item-row{display:grid;grid-template-columns:1fr 1.3fr 0.7fr 1fr 1fr 36px;gap:4px;margin-bottom:6px;align-items:center;animation:rowIn 0.22s}
+        @keyframes rowIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+        .line-item-row input,.line-item-row select{padding:8px 9px;border:2px solid var(--border);border-radius:4px;font-size:0.81rem;background:var(--bg-surface);color:var(--text-primary);width:100%;transition:border-color 0.15s}
+        .line-item-row input:focus,.line-item-row select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 2px var(--accent-light)}
+        .remove-item-btn{background:var(--danger);color:#fff;border:none;width:30px;height:30px;border-radius:4px;cursor:pointer;font-size:0.65rem;transition:all 0.15s;display:flex;align-items:center;justify-content:center}
+        .remove-item-btn:hover{background:var(--danger-hover);transform:scale(1.08)}
+        .line-item-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+        
+        .btn{padding:8px 16px;border:none;border-radius:var(--radius-sm);font-size:0.84rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;font-family:inherit;position:relative;overflow:hidden}
+        .btn-accent{background:var(--accent);color:#fff}
+        .btn-accent:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 7px 18px var(--accent-glow)}
+        .btn-outline{background:transparent;color:var(--text-secondary);border:2px solid var(--border)}
+        .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+        .btn-outline-danger{background:transparent;color:var(--danger);border:2px solid var(--danger)}
+        .btn-outline-danger:hover{background:var(--danger);color:#fff}
+        .btn-download{width:100%;background:linear-gradient(135deg,var(--accent),#2c5282);color:#fff;padding:12px 20px;font-size:0.92rem;border-radius:var(--radius);margin-top:0.8rem}
+        .btn-download:hover{transform:translateY(-3px);box-shadow:0 10px 28px var(--accent-glow)}
+        .btn-shine{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);animation:btnShine 3s infinite}
+        @keyframes btnShine{0%{left:-100%}50%,100%{left:100%}}
+        .btn-full{width:100%;justify-content:center}
+        
+        .preview-panel{flex:1;display:flex;flex-direction:column;background:#cbd5e1;overflow:hidden}
+        [data-theme="dark"] .preview-panel{background:#141a24}
+        .preview-top{padding:1.2rem 1.5rem 0.8rem;flex-shrink:0;border-bottom:1px solid var(--border-light)}
+        .preview-top h2{font-size:1.15rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:9px}
+        .preview-top p{font-size:0.76rem;color:var(--text-muted);margin-top:2px}
+        .preview-wrapper{flex:1;background:#fff;overflow:hidden;display:flex;flex-direction:column;margin:0}
+        [data-theme="dark"] .preview-wrapper{background:#fff}
+        .preview-scroll{flex:1;overflow-y:auto;overflow-x:auto;padding:1.5rem;display:flex;justify-content:center}
+        
+        .invoice-page{width:100%;max-width:210mm;min-height:297mm;background:#fff;padding:15mm 18mm;font-family:var(--inv-font);font-size:calc(0.8rem * var(--inv-font-size));color:#1e293b;box-shadow:0 2px 20px rgba(0,0,0,0.08);transition:font-family 0.2s,font-size 0.2s;margin:0 auto}
+        .inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.4rem;padding-bottom:1.2rem;border-bottom:2px solid var(--inv-accent);transition:border-color 0.2s}
+        .inv-company{font-size:0.93rem;line-height:1.58;color:#1e293b}
+        .inv-company strong{font-size:1.12rem;font-weight:800;color:var(--inv-accent);transition:color 0.2s}
+        .inv-badge{text-align:right}
+        .badge-text{display:inline-block;background:var(--inv-accent);color:#fff;font-weight:700;font-size:1rem;padding:6px 16px;border-radius:3px;letter-spacing:1px;transition:background 0.2s}
+        .inv-billto{display:flex;gap:2rem;margin-bottom:1.3rem;padding-bottom:1rem;border-bottom:1px solid #e2e8f0;font-size:0.86rem;line-height:1.55;color:#334155}
+        .inv-details-line{font-size:0.76rem;color:#64748b;margin-bottom:1.3rem;padding-bottom:1rem;border-bottom:1px solid #e2e8f0}
+        .inv-table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .inv-table{width:100%;border-collapse:collapse;margin-bottom:0;min-width:500px}
+        .inv-table thead tr{background:var(--inv-accent);transition:background 0.2s}
+        .inv-table th{color:#fff;padding:8px 9px;text-align:left;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+        .th-date{width:11%}.th-type{width:7%}.th-desc{width:38%}.th-qty{width:8%;text-align:right}.th-rate{width:16%;text-align:right}.th-amount{width:20%;text-align:right}
+        .inv-table td{padding:8px 9px;border-bottom:1px solid #e2e8f0;font-size:0.8rem;color:#334155;vertical-align:top}
+        .inv-table td:nth-child(4),.inv-table td:nth-child(5),.inv-table td:nth-child(6){text-align:right}
+        .inv-table tbody tr:nth-child(even){background:#f8fafc}
+        .inv-totals{display:flex;justify-content:flex-end;padding:0.9rem 0;border-bottom:1px solid #e2e8f0}
+        .totals-block{text-align:right}
+        .total-row{display:flex;justify-content:space-between;gap:2rem;padding:0.28rem 0;font-size:0.86rem}
+        .total-row.subtotal{color:#475569}.total-row.vat-row{color:#475569}
+        .total-row.grand-total{font-weight:800;font-size:1.15rem;color:var(--inv-accent);border-top:2px solid var(--inv-accent);padding-top:0.5rem;margin-top:0.3rem;transition:color 0.2s,border-color 0.2s}
+        .inv-vat-summary{background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;padding:0.8rem 1rem;margin-bottom:1rem;font-size:0.78rem}
+        .vat-summary-title{font-weight:700;color:var(--inv-accent);margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.5px;transition:color 0.2s}
+        .vat-summary-row{display:flex;justify-content:space-between;padding:0.15rem 0}
+        .inv-notes{font-size:0.76rem;color:#64748b;padding-top:0.7rem;border-top:1px solid #e2e8f0}
+        .balance-due{font-weight:800;font-size:0.92rem;color:var(--inv-accent);margin-top:0.45rem;transition:color 0.2s}
+        
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:3000;justify-content:center;align-items:center;backdrop-filter:blur(3px)}
+        .modal.show{display:flex}
+        .modal-box{background:var(--bg-surface);padding:1.6rem;border-radius:var(--radius);max-width:460px;width:92%;text-align:center;box-shadow:var(--shadow-lg)}
+        .modal-box h3{margin-bottom:0.9rem;color:var(--text-primary)}
+        
+        @media(max-width:1100px){.main-container{flex-direction:column;height:auto;min-height:calc(100vh - var(--header-h))}.form-panel{width:100%;min-width:unset;max-height:none;border-right:none;border-bottom:2px solid var(--border-light)}.form-scroll{max-height:60vh}.preview-panel{flex:1;min-height:500px}.invoice-page{max-width:100%;min-height:auto;padding:12mm 14mm}.header{padding:0 1.2rem}.tagline{display:none}}
+        @media(max-width:768px){:root{--header-h:56px}.header{padding:0 0.8rem}.brand-name{font-size:1.1rem}.logo-box{width:32px;height:32px}.header-right .icon-btn{width:32px;height:32px;font-size:0.8rem}.btn-tip{display:none}.mobile-only{display:flex!important}.form-panel{width:100%;min-width:unset}.panel-top{padding:0.9rem 1rem 0.6rem}.panel-top h2{font-size:1rem}.form-scroll{padding:0.8rem;max-height:none}.form-card{padding:0.8rem 0.9rem;margin-bottom:0.7rem}.form-row-2col{grid-template-columns:1fr;gap:0}.line-item-row{grid-template-columns:1fr 1fr 1fr;gap:3px}.line-item-row .item-type,.line-item-row .item-desc{grid-column:1/-1}.floating-label input,.floating-label textarea,.floating-label select{font-size:0.9rem;padding:14px 11px 7px}.preview-panel{min-height:400px}.preview-top{padding:0.9rem 1rem 0.6rem}.preview-top h2{font-size:1rem}.preview-scroll{padding:0.6rem}.invoice-page{padding:8mm 10mm;font-size:calc(0.72rem * var(--inv-font-size))}.inv-header{flex-direction:column;gap:0.8rem}.inv-badge{text-align:left}.inv-billto{flex-direction:column;gap:0.5rem}.inv-table{min-width:420px}.inv-table th{font-size:0.66rem;padding:6px 7px}.inv-table td{font-size:0.72rem;padding:6px 7px}.total-row{font-size:0.8rem}.total-row.grand-total{font-size:1rem}.inv-company{font-size:0.85rem}.badge-text{font-size:0.9rem;padding:5px 12px}.form-panel.mobile-hidden{display:none}.preview-panel.mobile-hidden{display:none}.customize-panel{width:100%;right:-100%}}
+        @media(max-width:400px){.header{padding:0 0.5rem}.header-left{gap:6px}.brand-name{font-size:0.95rem}.logo-box{width:28px;height:28px}.header-right{gap:3px}.header-right .icon-btn{width:28px;height:28px;font-size:0.72rem;border-radius:6px}.invoice-page{padding:5mm 7mm;font-size:calc(0.68rem * var(--inv-font-size))}.inv-table{min-width:380px}.inv-table th{font-size:0.6rem;padding:4px 5px}.inv-table td{font-size:0.66rem;padding:4px 5px}.btn-download{padding:10px 16px;font-size:0.82rem}.form-scroll{padding:0.5rem}}
+        @media print{body{background:#fff}body *{visibility:hidden}#invoicePage,#invoicePage *{visibility:visible}#invoicePage{position:absolute;left:0;top:0;width:100%;max-width:100%;min-height:auto;padding:0.6cm 0.8cm;box-shadow:none}.header,.form-panel,.preview-top,.preview-wrapper,.preview-scroll{display:none!important}.inv-table thead tr{background:var(--inv-accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.badge-text{background:var(--inv-accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+        .form-scroll::-webkit-scrollbar,.preview-scroll::-webkit-scrollbar,.customize-panel::-webkit-scrollbar{width:6px}
+        .form-scroll::-webkit-scrollbar-track,.preview-scroll::-webkit-scrollbar-track,.customize-panel::-webkit-scrollbar-track{background:transparent}
+        .form-scroll::-webkit-scrollbar-thumb,.preview-scroll::-webkit-scrollbar-thumb,.customize-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+        /* =========== ALL CSS END =========== */
+    </style>
+</head>
+<body>
+    
+    <header class="header">
+        <div class="header-shine"></div>
+        <div class="header-left">
+            <div class="logo-box">
+                <svg viewBox="0 0 100 100" width="30" height="30"><rect width="100" height="100" rx="22" fill="none" stroke="white" stroke-width="6"/><path d="M25 38 L50 28 L75 38 L75 62 L50 72 L25 62 Z" fill="none" stroke="white" stroke-width="5" stroke-linejoin="round"/><line x1="37" y1="45" x2="63" y2="45" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="37" y1="53" x2="56" y2="53" stroke="white" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <span class="brand-name">FreeForm<span class="brand-dot">.</span>io</span>
+        </div>
+        <div class="header-center"><span class="tagline">Professional Invoice Generator</span></div>
+        <div class="header-right">
+            <button id="customizeToggle" class="icon-btn" title="Customize"><i class="fas fa-palette"></i><span class="btn-tip">Style</span></button>
+            <button id="darkModeToggle" class="icon-btn" title="Dark/Light"><i class="fas fa-moon"></i><span class="btn-tip">Theme</span></button>
+            <button id="saveDraftBtn" class="icon-btn" title="Save"><i class="fas fa-save"></i><span class="btn-tip">Save</span></button>
+            <button id="loadDraftBtn" class="icon-btn" title="Load"><i class="fas fa-folder-open"></i><span class="btn-tip">Load</span></button>
+            <button id="toggleViewBtn" class="icon-btn mobile-only" title="Switch View"><i class="fas fa-exchange-alt"></i></button>
+        </div>
+    </header>
+
+    <aside class="customize-panel" id="customizePanel">
+        <div class="customize-header">
+            <div><h3><i class="fas fa-paint-brush"></i> Customize Style</h3><p class="customize-note">Changes apply to text, accents & borders</p></div>
+            <button id="closeCustomize" class="close-btn">&times;</button>
+        </div>
+        <div class="customize-body">
+            <div class="custom-section">
+                <label class="custom-label"><i class="fas fa-paint-brush"></i> Accent Color <span>(headings, table header)</span></label>
+                <div class="color-presets" data-section="accent">
+                    <button class="color-dot active" data-color="#1a3a5c" style="background:#1a3a5c"></button>
+                    <button class="color-dot" data-color="#1e293b" style="background:#1e293b"></button>
+                    <button class="color-dot" data-color="#2563eb" style="background:#2563eb"></button>
+                    <button class="color-dot" data-color="#7c3aed" style="background:#7c3aed"></button>
+                    <button class="color-dot" data-color="#059669" style="background:#059669"></button>
+                    <button class="color-dot" data-color="#dc2626" style="background:#dc2626"></button>
+                    <button class="color-dot" data-color="#ea580c" style="background:#ea580c"></button>
+                    <button class="color-dot" data-color="#0f172a" style="background:#0f172a"></button>
+                </div>
+                <input type="color" id="accentColorPicker" class="color-picker" value="#1a3a5c">
+            </div>
+            <div class="custom-section">
+                <label class="custom-label"><i class="fas fa-font"></i> Invoice Font</label>
+                <select id="fontFamilySelect" class="custom-select">
+                    <option value="Lato">Lato (Professional)</option><option value="Inter">Inter (Modern)</option><option value="Raleway">Raleway (Elegant)</option><option value="Montserrat">Montserrat (Bold)</option><option value="Roboto">Roboto (Classic)</option><option value="Open Sans">Open Sans (Friendly)</option><option value="Nunito">Nunito (Soft)</option><option value="Georgia">Georgia (Serif)</option>
+                </select>
+            </div>
+            <div class="custom-section">
+                <label class="custom-label"><i class="fas fa-text-height"></i> Font Size: <strong id="fontSizeValue">Normal</strong></label>
+                <input type="range" id="fontSizeSlider" class="range-slider" min="0" max="2" step="1" value="1">
+                <div class="range-labels"><span>Small</span><span>Normal</span><span>Large</span></div>
+            </div>
+            <div class="custom-section">
+                <label class="custom-label"><i class="fas fa-eye"></i> Show VAT Summary</label>
+                <label class="toggle-switch"><input type="checkbox" id="showVatDetails" checked><span class="toggle-slider"></span></label>
+            </div>
+            <button id="resetCustomize" class="btn btn-outline btn-full"><i class="fas fa-undo"></i> Reset to Default</button>
+        </div>
+    </aside>
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main-container">
+        <section class="form-panel" id="formPanel">
+            <div class="panel-top"><h2><i class="fas fa-file-invoice"></i> Invoice Details</h2><p>Fill in the fields — live preview updates instantly</p></div>
+            <div class="form-scroll">
+                <fieldset class="form-card"><legend><i class="fas fa-file-alt"></i> Document Type</legend>
+                    <div class="form-group floating-label">
+                        <select id="documentType">
+                            <option value="Invoice">Invoice</option><option value="Credit Note">Credit Note</option><option value="Quote">Quote / Estimate</option><option value="Proforma Invoice">Proforma Invoice</option><option value="Receipt">Receipt</option><option value="Purchase Order">Purchase Order</option><option value="Delivery Note">Delivery Note</option>
+                        </select>
+                        <label>Document Type</label>
+                    </div>
+                </fieldset>
+                <fieldset class="form-card"><legend><i class="fas fa-building"></i> Your Company (From)</legend>
+                    <div class="form-group floating-label"><input type="text" id="fromCompanyName" placeholder=" " value="Universal Support Services Group Ltd"><label>Company Name *</label></div>
+                    <div class="form-group floating-label"><textarea id="fromAddress" rows="3" placeholder=" ">Unit NG6, Houldsworth Business & Art Center&#10;Houldsworth Mill, Houldsworth St&#10;Reddish, Stockport, England, SK5 6DA</textarea><label>Full Address</label></div>
+                    <div class="form-row-2col">
+                        <div class="form-group floating-label"><input type="text" id="fromVatNumber" placeholder=" " value="286617367"><label>VAT Registration No.</label></div>
+                        <div class="form-group floating-label"><input type="text" id="fromCompanyNumber" placeholder=" " value="10289772"><label>Company Registration No.</label></div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-card"><legend><i class="fas fa-user-tie"></i> Bill To (Client)</legend>
+                    <div class="form-group floating-label"><input type="text" id="toCompanyName" placeholder=" " value="FGH SECURITY LTD"><label>Client Company Name *</label></div>
+                    <div class="form-group floating-label"><textarea id="toAddress" rows="3" placeholder=" ">Alston House&#10;White Cross Business Park, South Road&#10;Lancaster, LA1 4XQ</textarea><label>Client Full Address</label></div>
+                </fieldset>
+                <fieldset class="form-card"><legend><i class="fas fa-calendar-alt"></i> Document Details</legend>
+                    <div class="form-row-2col">
+                        <div class="form-group floating-label"><input type="text" id="invoiceNumber" placeholder=" " value="INV-2026-0042"><label>Document Number</label></div>
+                        <div class="form-group floating-label"><input type="date" id="invoiceDate"><label>Document Date</label></div>
+                    </div>
+                    <div class="form-row-2col">
+                        <div class="form-group floating-label"><input type="date" id="dueDate"><label>Due Date</label></div>
+                        <div class="form-group floating-label"><select id="currency"><option value="£">GBP (£)</option><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="₹">INR (₹)</option><option value="¥">JPY (¥)</option><option value="C$">CAD (C$)</option><option value="A$">AUD (A$)</option></select><label>Currency</label></div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-card"><legend><i class="fas fa-percent"></i> VAT / Tax Settings</legend>
+                    <div class="form-row-2col">
+                        <div class="form-group floating-label"><select id="vatRate"><option value="20">Standard Rate (20%)</option><option value="5">Reduced Rate (5%)</option><option value="0">Zero-rated (0%)</option><option value="custom">Custom Rate...</option></select><label>VAT Rate</label></div>
+                        <div class="form-group floating-label" id="customVatGroup" style="display:none"><input type="number" id="customVatRate" placeholder=" " value="0" min="0" max="100" step="0.1"><label>Custom VAT %</label></div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-card" id="lineItemsSection"><legend><i class="fas fa-list-check"></i> Services / Items</legend>
+                    <div id="lineItemsContainer"></div>
+                    <div class="line-item-actions">
+                        <button id="addLineItemBtn" class="btn btn-accent"><i class="fas fa-plus-circle"></i> Add Row</button>
+                        <button id="clearAllItemsBtn" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i> Clear All</button>
+                    </div>
+                </fieldset>
+                <fieldset class="form-card"><legend><i class="fas fa-note-sticky"></i> Notes</legend>
+                    <div class="form-group floating-label"><textarea id="notes" rows="2" placeholder=" ">Payment due within 30 days of invoice date.</textarea><label>Notes / Payment Terms</label></div>
+                </fieldset>
+                <button id="downloadPdfBtn" class="btn btn-download"><i class="fas fa-file-pdf"></i> Download as PDF<span class="btn-shine"></span></button>
+            </div>
+        </section>
+
+        <section class="preview-panel" id="previewPanel">
+            <div class="preview-top"><h2><i class="fas fa-eye"></i> Live Preview</h2><p>Updates in real-time — exactly as it will print</p></div>
+            <div class="preview-wrapper">
+                <div class="preview-scroll">
+                    <div class="invoice-page" id="invoicePage">
+                        <div class="inv-header"><div class="inv-company" id="previewFromCompany"></div><div class="inv-badge"><span class="badge-text" id="previewBadgeText">INVOICE</span></div></div>
+                        <div class="inv-billto" id="previewBillTo"></div>
+                        <div class="inv-details-line" id="previewDetailsLine"></div>
+                        <div class="inv-table-wrap"><table class="inv-table" id="previewTable"><thead><tr><th class="th-date">DATE</th><th class="th-type">TYPE</th><th class="th-desc">DESCRIPTION</th><th class="th-qty">QTY</th><th class="th-rate">RATE</th><th class="th-amount">AMOUNT</th></tr></thead><tbody id="previewTableBody"></tbody></table></div>
+                        <div class="inv-totals" id="previewTotalsSection"></div>
+                        <div class="inv-vat-summary" id="previewVatSummary"></div>
+                        <div class="inv-notes" id="previewNotes"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="draftsModal" class="modal"><div class="modal-box"><h3><i class="fas fa-save"></i> Saved Drafts</h3><div id="draftsList"><p>Loading...</p></div><button id="closeDraftsModal" class="btn btn-outline">Close</button></div></div>
+
+    <script>
+        /* =========== ALL JAVASCRIPT START =========== */
+        
+        // ===== STORAGE =====
+        const PREFIX='ff_draft_';
+        function saveDraft(name,data){try{const k=PREFIX+name.replace(/[^a-zA-Z0-9_-]/g,'_');localStorage.setItem(k,JSON.stringify({name,data,timestamp:new Date().toISOString()}));return true}catch(e){return false}}
+        function loadDraft(name){try{const k=PREFIX+name.replace(/[^a-zA-Z0-9_-]/g,'_');const i=localStorage.getItem(k);return i?JSON.parse(i).data:null}catch(e){return null}}
+        function getAllDrafts(){const d=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(PREFIX)){try{d.push(JSON.parse(localStorage.getItem(k)))}catch(e){}}}return d.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp))}
+        function deleteDraft(name){localStorage.removeItem(PREFIX+name.replace(/[^a-zA-Z0-9_-]/g,'_'))}
+        function escHtml(s){if(!s)return '';const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+        
+        function showDraftsModal(){
+            const m=document.getElementById('draftsModal'),l=document.getElementById('draftsList'),d=getAllDrafts();
+            if(!d.length){l.innerHTML='<p style="color:var(--text-muted)">No saved drafts.</p>'}
+            else{l.innerHTML=d.map(dr=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--border-light);margin-bottom:4px;text-align:left"><div><strong>${escHtml(dr.name)}</strong><br><small style="color:var(--text-muted)">${new Date(dr.timestamp).toLocaleString()}</small></div><div style="display:flex;gap:5px"><button onclick="loadDraftAndClose('${dr.name}')" class="btn btn-accent" style="padding:4px 10px;font-size:0.75rem">Load</button><button onclick="deleteDraftAndRefresh('${dr.name}')" class="btn btn-outline-danger" style="padding:4px 10px;font-size:0.75rem"><i class="fas fa-trash"></i></button></div></div>`).join('')}
+            m.classList.add('show')
+        }
+        function loadDraftAndClose(name){const d=loadDraft(name);if(d&&typeof restoreData==='function')restoreData(d);document.getElementById('draftsModal').classList.remove('show')}
+        function deleteDraftAndRefresh(name){if(confirm('Delete this draft?')){deleteDraft(name);showDraftsModal()}}
+        
+        // ===== CUSTOMIZER =====
+        const Customizer={settings:{accent:'#1a3a5c',fontFamily:'Lato',fontSize:1,showVatDetails:true},init(){this.load();this.applyAll();this.events()},load(){try{const s=localStorage.getItem('ff_customize');if(s)this.settings={...this.settings,...JSON.parse(s)}}catch(e){}},save(){localStorage.setItem('ff_customize',JSON.stringify(this.settings))},applyAll(){this.accent();this.font();this.fontSize();this.vatVisibility();this.ui()},accent(){const c=this.settings.accent;document.documentElement.style.setProperty('--accent',c);document.documentElement.style.setProperty('--inv-accent',c);document.documentElement.style.setProperty('--accent-hover',this.darken(c,25));document.documentElement.style.setProperty('--accent-light',c+'14');document.documentElement.style.setProperty('--accent-glow',c+'4D');const p=document.getElementById('accentColorPicker');if(p)p.value=c},font(){document.documentElement.style.setProperty('--inv-font',`'${this.settings.fontFamily}',sans-serif`);const s=document.getElementById('fontFamilySelect');if(s)s.value=this.settings.fontFamily},fontSize(){const sizes=[0.76,0.82,0.90];document.documentElement.style.setProperty('--inv-font-size',sizes[this.settings.fontSize]);const s=document.getElementById('fontSizeSlider');if(s)s.value=this.settings.fontSize;const labels=['Small','Normal','Large'];const v=document.getElementById('fontSizeValue');if(v)v.textContent=labels[this.settings.fontSize]},vatVisibility(){const c=document.getElementById('showVatDetails');if(c)c.checked=this.settings.showVatDetails},darken(hex,amt){let n=parseInt(hex.replace('#',''),16);let r=Math.max(0,(n>>16)-amt);let g=Math.max(0,((n>>8)&0xFF)-amt);let b=Math.max(0,(n&0xFF)-amt);return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)},ui(){document.querySelectorAll('.color-dot[data-section="accent"]').forEach(b=>b.classList.toggle('active',b.dataset.color===this.settings.accent))},events(){const $=id=>document.getElementById(id);$('customizeToggle').addEventListener('click',()=>this.open());$('closeCustomize').addEventListener('click',()=>this.close());$('overlay').addEventListener('click',()=>this.close());document.querySelectorAll('.color-dot[data-section="accent"]').forEach(b=>{b.addEventListener('click',()=>{this.settings.accent=b.dataset.color;this.applyAll();this.save();if(typeof updatePreview==='function')updatePreview()})});$('accentColorPicker').addEventListener('input',e=>{this.settings.accent=e.target.value;this.applyAll();this.save();if(typeof updatePreview==='function')updatePreview()});$('fontFamilySelect').addEventListener('change',e=>{this.settings.fontFamily=e.target.value;this.applyAll();this.save()});$('fontSizeSlider').addEventListener('input',e=>{this.settings.fontSize=parseInt(e.target.value);this.applyAll();this.save()});$('showVatDetails').addEventListener('change',e=>{this.settings.showVatDetails=e.target.checked;this.applyAll();this.save();if(typeof updatePreview==='function')updatePreview()});$('resetCustomize').addEventListener('click',()=>{this.settings={accent:'#1a3a5c',fontFamily:'Lato',fontSize:1,showVatDetails:true};this.applyAll();this.save();if(typeof updatePreview==='function')updatePreview()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('customizePanel').classList.contains('open'))this.close()})},open(){$('customizePanel').classList.add('open');$('overlay').classList.add('show');document.body.style.overflow='hidden'},close(){$('customizePanel').classList.remove('open');$('overlay').classList.remove('show');document.body.style.overflow=''}};
+        
+        // ===== INVOICE LOGIC =====
+        function initApp(){setDefaultDates();addInitialLineItems();attachEvents();updatePreview();loadAutosave();initDarkMode();initVatToggle();initMobileToggle()}
+        function initMobileToggle(){const b=document.getElementById('toggleViewBtn'),f=document.getElementById('formPanel'),p=document.getElementById('previewPanel');if(!b||!f||!p)return;b.addEventListener('click',()=>{const h=f.classList.contains('mobile-hidden');if(h){f.classList.remove('mobile-hidden');p.classList.add('mobile-hidden')}else{f.classList.add('mobile-hidden');p.classList.remove('mobile-hidden')}})}
+        function setDefaultDates(){const t=new Date(),d=new Date(t);d.setDate(d.getDate()+30);document.getElementById('invoiceDate').value=fmtDateInput(t);document.getElementById('dueDate').value=fmtDateInput(d)}
+        function fmtDateInput(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${dd}`}
+        function fmtDateDisplay(s){if(!s)return '';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'})}
+        function addInitialLineItems(){const c=document.getElementById('lineItemsContainer');c.innerHTML='';addLineItem(c,{date:document.getElementById('invoiceDate').value,type:'Hours',desc:'Provision of Security Services',qty:'1',rate:'1589.22'})}
+        function addLineItem(container,data=null){const dv=data?data.date:document.getElementById('invoiceDate').value;const row=document.createElement('div');row.className='line-item-row';row.innerHTML=`<input type="date" class="item-date" value="${dv}"><select class="item-type"><option value="Hours" ${data&&data.type==='Hours'?'selected':''}>Hours</option><option value="Days">Days</option><option value="Units">Units</option><option value="Service">Service</option><option value="Product">Product</option></select><input type="text" class="item-desc" placeholder="Description" value="${data?escHtml(data.desc):''}"><input type="number" class="item-qty" value="${data?data.qty:'1'}" min="0" step="1"><input type="number" class="item-rate" value="${data?data.rate:'0.00'}" min="0" step="0.01"><input type="number" class="item-amount" readonly tabindex="-1"><button class="remove-item-btn"><i class="fas fa-times"></i></button>`;container.appendChild(row);if(data)calcItemAmount(row);row.querySelectorAll('.item-date,.item-type,.item-desc,.item-qty,.item-rate').forEach(inp=>{inp.addEventListener('input',()=>{calcItemAmount(row);updatePreview();autoSave()})});row.querySelector('.remove-item-btn').addEventListener('click',()=>{row.style.animation='rowIn 0.2s ease reverse';setTimeout(()=>{row.remove();updatePreview();autoSave()},150)})}
+        function calcItemAmount(row){const q=parseFloat(row.querySelector('.item-qty').value)||0,r=parseFloat(row.querySelector('.item-rate').value)||0;row.querySelector('.item-amount').value=(q*r).toFixed(2)}
+        function getLineItems(){const items=[];document.querySelectorAll('#lineItemsContainer .line-item-row').forEach(row=>{const date=row.querySelector('.item-date').value,type=row.querySelector('.item-type').value,desc=row.querySelector('.item-desc').value.trim(),qty=parseFloat(row.querySelector('.item-qty').value)||0,rate=parseFloat(row.querySelector('.item-rate').value)||0;if(desc||qty>0)items.push({date,type,desc,qty,rate,amount:qty*rate})});return items}
+        function getVatRate(){const s=document.getElementById('vatRate');if(s.value==='custom')return parseFloat(document.getElementById('customVatRate').value)||0;return parseFloat(s.value)}
+        function initVatToggle(){const s=document.getElementById('vatRate'),g=document.getElementById('customVatGroup');s.addEventListener('change',()=>{g.style.display=s.value==='custom'?'block':'none';updatePreview();autoSave()});document.getElementById('customVatRate')?.addEventListener('input',()=>{updatePreview();autoSave()})}
+        function calcTotals(){const items=getLineItems();const s=items.reduce((sum,i)=>sum+i.amount,0);const vr=getVatRate();const v=s*(vr/100);return{subtotal:s,vatRate:vr,vatAmount:v,total:s+v}}
+        function updatePreview(){
+            const currency=document.getElementById('currency').value,docType=document.getElementById('documentType').value;
+            document.getElementById('previewBadgeText').textContent=docType.toUpperCase();
+            const fn=document.getElementById('fromCompanyName').value||'Your Company Name',fa=(document.getElementById('fromAddress').value||'').replace(/\n/g,'<br>'),fv=document.getElementById('fromVatNumber').value,fc=document.getElementById('fromCompanyNumber').value;
+            document.getElementById('previewFromCompany').innerHTML=`<strong>${escHtml(fn)}</strong><br>${fa}${fv?`<br><span style="font-size:0.78rem;color:#64748b;">VAT Registration No.: ${escHtml(fv)}</span>`:''}`;
+            const tn=document.getElementById('toCompanyName').value||'Client Name',ta=(document.getElementById('toAddress').value||'').replace(/\n/g,'<br>');
+            document.getElementById('previewBillTo').innerHTML=`<div><strong>${docType.toUpperCase()} TO</strong></div><div><strong>${escHtml(tn)}</strong><br>${ta}</div>`;
+            let dl='';if(fv)dl+=`USSG VAT Registration No. ${escHtml(fv)}`;if(fc)dl+=(dl?' | ':'')+`Company Registration No. ${escHtml(fc)}`;document.getElementById('previewDetailsLine').textContent=dl;
+            const items=getLineItems(),tbody=document.getElementById('previewTableBody');tbody.innerHTML='';
+            if(!items.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">No items added</td></tr>'}
+            else{items.forEach(item=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${item.date?fmtDateDisplay(item.date):''}</td><td>${escHtml(item.type)}</td><td>${escHtml(item.desc)}</td><td>${item.qty}</td><td>${item.rate.toFixed(2)}</td><td>${item.amount.toFixed(2)}</td>`;tbody.appendChild(tr)})}
+            const t=calcTotals();document.getElementById('previewTotalsSection').innerHTML=`<div class="totals-block"><div class="total-row subtotal"><span>SUBTOTAL</span><span>${currency}${t.subtotal.toFixed(2)}</span></div><div class="total-row vat-row"><span>VAT @ ${t.vatRate}%</span><span>${currency}${t.vatAmount.toFixed(2)}</span></div><div class="total-row grand-total"><span>TOTAL</span><span>${currency}${t.total.toFixed(2)}</span></div></div>`;
+            const showVat=document.getElementById('showVatDetails')?.checked??true,vbox=document.getElementById('previewVatSummary');vbox.style.display=showVat?'block':'none';vbox.innerHTML=`<div class="vat-summary-title">VAT SUMMARY</div><div class="vat-summary-row"><span><strong>RATE</strong></span><span><strong>VAT</strong></span><span><strong>NET</strong></span></div><div class="vat-summary-row"><span>VAT @ ${t.vatRate}%</span><span>${currency}${t.vatAmount.toFixed(2)}</span><span>${currency}${t.subtotal.toFixed(2)}</span></div>`;
+            const notes=document.getElementById('notes').value;document.getElementById('previewNotes').innerHTML='';if(notes)document.getElementById('previewNotes').innerHTML+=`<p>${escHtml(notes)}</p>`;document.getElementById('previewNotes').innerHTML+=`<div class="balance-due">BALANCE DUE: ${currency}${t.total.toFixed(2)}</div>`
+        }
+        function downloadPDF(){
+            const clone=document.getElementById('invoicePage').cloneNode(true);
+            const accent=getComputedStyle(document.documentElement).getPropertyValue('--inv-accent').trim();
+            const font=getComputedStyle(document.documentElement).getPropertyValue('--inv-font').trim().replace(/'/g,'');
+            const w=window.open('','_blank','width=900,height=700');
+            w.document.write(`<!DOCTYPE html><html><head><title>Invoice - FreeForm.io</title><link href="https://fonts.googleapis.com/css2?family=${font.replace(/ /g,'+')}:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:${font},sans-serif;padding:1cm 1.3cm;color:#1e293b;background:#fff;font-size:0.84rem}.invoice-page{max-width:850px;margin:0 auto;min-height:auto;box-shadow:none}.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.6rem;padding-bottom:1.4rem;border-bottom:2px solid ${accent}}.inv-company{line-height:1.6}.inv-company strong{font-size:1.15rem;font-weight:800;color:${accent}}.badge-text{display:inline-block;background:${accent};color:#fff;font-weight:700;font-size:1.05rem;padding:7px 18px;border-radius:3px;letter-spacing:1px}.inv-billto{display:flex;gap:2rem;margin-bottom:1.4rem;padding-bottom:1.1rem;border-bottom:1px solid #e2e8f0;line-height:1.6}.inv-details-line{font-size:0.78rem;color:#64748b;margin-bottom:1.4rem;padding-bottom:1.1rem;border-bottom:1px solid #e2e8f0}.inv-table{width:100%;border-collapse:collapse}.inv-table thead tr{background:${accent}}.inv-table th{color:#fff;padding:9px 10px;text-align:left;font-size:0.74rem;text-transform:uppercase}.inv-table td{padding:9px 10px;border-bottom:1px solid #e2e8f0;font-size:0.82rem}.inv-table td:nth-child(4),.inv-table td:nth-child(5),.inv-table td:nth-child(6){text-align:right}.inv-totals{display:flex;justify-content:flex-end;padding:1rem 0}.total-row{display:flex;justify-content:space-between;gap:2.5rem;padding:0.3rem 0}.grand-total{font-weight:800;font-size:1.2rem;color:${accent};border-top:2px solid ${accent};padding-top:0.55rem;margin-top:0.35rem}.inv-vat-summary{background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;padding:0.9rem 1.1rem;margin-bottom:1.1rem;font-size:0.8rem}.vat-summary-title{font-weight:700;color:${accent};text-transform:uppercase}.inv-notes{font-size:0.78rem;color:#64748b;padding-top:0.8rem;border-top:1px solid #e2e8f0}.balance-due{font-weight:800;font-size:0.95rem;color:${accent};margin-top:0.5rem}@media print{body{padding:0}}</style></head><body><div class="invoice-page">${clone.innerHTML}</div></body></html>`);
+            w.document.close();setTimeout(()=>{w.print();setTimeout(()=>w.close(),400)},500)
+        }
+        function autoSave(){saveDraft('autosave',collectData())}
+        function collectData(){return{docType:document.getElementById('documentType').value,fromCompanyName:document.getElementById('fromCompanyName').value,fromAddress:document.getElementById('fromAddress').value,fromVatNumber:document.getElementById('fromVatNumber').value,fromCompanyNumber:document.getElementById('fromCompanyNumber').value,toCompanyName:document.getElementById('toCompanyName').value,toAddress:document.getElementById('toAddress').value,invoiceNumber:document.getElementById('invoiceNumber').value,invoiceDate:document.getElementById('invoiceDate').value,dueDate:document.getElementById('dueDate').value,currency:document.getElementById('currency').value,vatRate:document.getElementById('vatRate').value,customVatRate:document.getElementById('customVatRate').value,notes:document.getElementById('notes').value,lineItems:getLineItems()}}
+        function restoreData(data){if(!data)return;const fields=['fromCompanyName','fromAddress','fromVatNumber','fromCompanyNumber','toCompanyName','toAddress','invoiceNumber','notes'];fields.forEach(f=>{const el=document.getElementById(f);if(el&&data[f]!==undefined)el.value=data[f]});if(data.docType)document.getElementById('documentType').value=data.docType;if(data.invoiceDate)document.getElementById('invoiceDate').value=data.invoiceDate;if(data.dueDate)document.getElementById('dueDate').value=data.dueDate;if(data.currency)document.getElementById('currency').value=data.currency;if(data.vatRate){document.getElementById('vatRate').value=data.vatRate;initVatToggle()}if(data.customVatRate)document.getElementById('customVatRate').value=data.customVatRate;const c=document.getElementById('lineItemsContainer');c.innerHTML='';if(data.lineItems&&data.lineItems.length){data.lineItems.forEach(item=>addLineItem(c,item))}else{addInitialLineItems()}updatePreview()}
+        function loadAutosave(){const data=loadDraft('autosave');if(data)restoreData(data)}
+        function initDarkMode(){if(localStorage.getItem('ff_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');const i=document.querySelector('#darkModeToggle i');if(i)i.className='fas fa-sun'}}
+        function toggleDarkMode(){const is=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',is?'':'dark');document.querySelector('#darkModeToggle i').className=is?'fas fa-moon':'fas fa-sun';localStorage.setItem('ff_theme',is?'':'dark')}
+        function attachEvents(){
+            document.querySelectorAll('#formPanel input, #formPanel textarea, #formPanel select').forEach(inp=>{inp.addEventListener('input',()=>{updatePreview();autoSave()});inp.addEventListener('change',()=>{updatePreview();autoSave()})});
+            document.getElementById('addLineItemBtn').addEventListener('click',()=>{addLineItem(document.getElementById('lineItemsContainer'));updatePreview();autoSave()});
+            document.getElementById('clearAllItemsBtn').addEventListener('click',()=>{if(confirm('Clear all items?')){document.getElementById('lineItemsContainer').innerHTML='';addLineItem(document.getElementById('lineItemsContainer'));updatePreview();autoSave()}});
+            document.getElementById('downloadPdfBtn').addEventListener('click',downloadPDF);
+            document.getElementById('darkModeToggle').addEventListener('click',toggleDarkMode);
+            document.getElementById('saveDraftBtn').addEventListener('click',()=>{const n=prompt('Draft name:','Draft '+new Date().toLocaleDateString());if(n){saveDraft(n,collectData());alert('Saved!')}});
+            document.getElementById('loadDraftBtn').addEventListener('click',showDraftsModal);
+            document.getElementById('closeDraftsModal')?.addEventListener('click',()=>{document.getElementById('draftsModal').classList.remove('show')})
+        }
+        
+        document.addEventListener('DOMContentLoaded',()=>{initApp();Customizer.init()});
+        /* =========== ALL JAVASCRIPT END =========== */
+    </script>
+</body>
+</html>
